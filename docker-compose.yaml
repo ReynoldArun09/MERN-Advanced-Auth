@@ -1,0 +1,53 @@
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./client:/app
+      - client_node_modules:/app/node_modules
+    env_file:
+      - ./client/.env
+    command: npm run dev -- --host
+    depends_on:
+      - server
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./server:/app
+      - server_node_modules:/app/node_modules
+    env_file:
+      - ./server/.env
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - app-network
+    restart: unless-stopped
+
+volumes:
+  client_node_modules:
+  server_node_modules:
+  mongo_data:
+
+networks:
+  app-network:
