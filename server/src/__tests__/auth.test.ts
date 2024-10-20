@@ -209,7 +209,7 @@ describe("Auth controller testing", () => {
         SuccessMessages.PASSWORD_RESET_SUCCESS
       );
     });
-    it("should reset password and return 200 status code", async () => {
+    it("should return 401 if token is invalid", async () => {
       (User.findOne as jest.Mock).mockResolvedValue(null);
       const response = await request(app)
         .post("/api/v1/auth/reset-password/token")
