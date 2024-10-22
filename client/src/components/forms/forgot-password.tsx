@@ -14,6 +14,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ForgotPasswordMutation } from "@/services/mutations";
+import { useEffect } from "react";
 
 const emailSchema = z.object({
   email: z.string().email("Please enter a valid email address."),
@@ -34,9 +35,18 @@ export default function ForgotPasswordForm() {
     },
   });
 
+  const emailValue = form.watch("email");
+
+  useEffect(() => {
+    if (emailValue === "" && error) {
+      error.message = "";
+    }
+  }, [emailValue, form, error]);
+
   const handleSubmit = (value: z.infer<typeof emailSchema>) => {
     ForgotPassword(value.email);
   };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">

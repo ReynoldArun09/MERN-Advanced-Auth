@@ -86,6 +86,7 @@ export default function SignUpForm() {
                   <Input
                     className="pl-8"
                     {...field}
+                    placeholder="************"
                     type={showPassword ? "text" : "password"}
                   />
                   {showPassword ? (

@@ -37,9 +37,13 @@ export function ForgotPasswordMutation() {
 }
 
 export function VerifyEmailMutation() {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ["email-verify"],
     mutationFn: VerifyEmailApi,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["verify-user"] });
+    },
   });
 }
 
