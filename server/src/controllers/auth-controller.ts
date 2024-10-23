@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { AppError, AsyncHandler } from "../utils";
 import { ErrorMessages, HttpStatusCode, SuccessMessages } from "../constants";
+import { ParsedEnv } from "../config/env-config";
 
 import {
   sendResetPasswordEmail,
@@ -38,8 +39,8 @@ export const SignUpApi = AsyncHandler(async (req: Request, res: Response) => {
 
   await user.save();
 
-  const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY, {
-    expiresIn: process.env.JWT_EXPIRE_TIME,
+  const token = jwt.sign({ id: user.id }, ParsedEnv.ACCESS_SECRET_KEY, {
+    expiresIn: ParsedEnv.ACCESS_TOKEN_EXPIRE_TIME,
   });
 
   await sendVerificationEmail(email, verificationToken);
@@ -113,8 +114,8 @@ export const SignInApi = AsyncHandler(async (req: Request, res: Response) => {
     );
   }
 
-  const token = jwt.sign({ id: existingUser.id }, process.env.JWT_SECRET_KEY, {
-    expiresIn: process.env.JWT_EXPIRE_TIME,
+  const token = jwt.sign({ id: existingUser.id }, ParsedEnv.ACCESS_SECRET_KEY, {
+    expiresIn: ParsedEnv.ACCESS_TOKEN_EXPIRE_TIME,
   });
 
   existingUser.lastLogin = Date.now();

@@ -1,9 +1,10 @@
 import mongoose, { MongooseError } from "mongoose";
 import { logger } from "../utils";
 import { ErrorMessages, SuccessMessages } from "../constants";
+import { ParsedEnv } from "../config/env-config";
 
 function MongoConnection() {
-  const mongo_url = process.env.MONGO_DB_URI;
+  const mongo_url = ParsedEnv.MONGO_DB_URI;
 
   if (!mongo_url) {
     logger.warn(ErrorMessages.MONGO_ENV_NOT_DEFINED);

@@ -1,9 +1,10 @@
 import app from "./app";
+import { ParsedEnv } from "./config/env-config";
 import MongoConnection from "./database/mongo-connection";
 
 import { logger } from "./utils";
 
-const PORT = process.env.PORT;
+const PORT = ParsedEnv.PORT;
 
 async function startServer() {
   try {
